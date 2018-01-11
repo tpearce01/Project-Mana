@@ -36,6 +36,6 @@ public class ArenaManager : MonoBehaviour {
     /// <param name="type"></param>
     /// <param name="layer"></param>
     public void SpawnTile(Point p, TileType type, int layer) {
-        Instantiate(tilePrefabs[(int)type], new Vector3(p.x, layer, p.y), Quaternion.identity);
+        Arena.Instance.GetTile(p, layer).sprite = (Instantiate(tilePrefabs[(int)type], new Vector3(p.x, layer, p.y), Quaternion.identity) as GameObject).GetComponentInChildren<SpriteRenderer>();
     }
 }

@@ -11,7 +11,8 @@ using UnityEngine;
 public class Arena {
     private static Arena instance;      // Singleton Reference
     FloorLayer[] layers;                // Air and Ground map layers
-    //FloorLayer fl = new FloorLayer();   //testing
+    Color highlightColor = new Color(.5f,.5f,.5f,.5f);
+    Color defaultColor = new Color(1, 1, 1, 0.5f);
 
     private Arena() {
         layers = new FloorLayer[2];
@@ -57,14 +58,36 @@ public class Arena {
     }
 
     /// <summary>
-    /// UNIMPLEMENTED
     /// Highlights the valid tiles in range
     /// </summary>
-    public void HighlightValidTiles(FloorLayers fl, int range) {
-        HighlightValidTiles((int)fl, range);
+    public void HighlightValidTiles(FloorLayers fl, int range, Point pos) {
+        HighlightValidTiles((int)fl, range, pos);
     }
-    public void HighlightValidTiles(int fl, int range) {
+    public void HighlightValidTiles(int fl, int range, Point pos) {
         //From top-left most corner
+        for (int x = pos.x - range; x <= pos.x + range; x++) {
+            for (int y = pos.y - range; y <= pos.y + range; y++) {
+                int absX = Mathf.Abs(x - pos.x);
+                int absY = Mathf.Abs(y - pos.y);
+                if (layers[fl].IsValidTile(x, y) && absX + absY <= range && (pos.x != x || pos.y != y)) {
+                    layers[fl].GetTile(x, y).sprite.color = highlightColor;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Reset ALL tile colors. INEFFICIENT - Consider keeping a list of points of the affected tiles, then
+    /// clearing only those tiles.
+    /// </summary>
+    public void ClearHighlights() {
+        for (int x = 0; x < layers[0].GetMapSize().x; x++) {
+            for (int y = 0; y < layers[0].GetMapSize().y; y++) {
+                for (int i = 0; i < layers.Length; i++) {
+                    layers[i].GetTile(x, y).sprite.color = defaultColor;
+                }
+            }
+        }
     }
 
     /// <summary>

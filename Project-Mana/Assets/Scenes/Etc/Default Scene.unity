@@ -145,7 +145,7 @@ MonoBehaviour:
   - {fileID: 1312835020727152, guid: 4da2853ec2b3b79448daf4d94a4fadd5, type: 2}
   - {fileID: 1312835020727152, guid: 4da2853ec2b3b79448daf4d94a4fadd5, type: 2}
   mapSize:
-    x: 5
+    x: 10
     y: 10
 --- !u!4 &202250102
 Transform:
@@ -159,6 +159,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &209370798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 209370800}
+  - component: {fileID: 209370799}
+  m_Layer: 0
+  m_Name: TestUnit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &209370799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 209370798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b139d7909341543ac265e0bf7599b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPos:
+    x: 5
+    y: 5
+  moveRange: 3
+  currentLayer: 1
+--- !u!4 &209370800
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 209370798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.8936715, y: 1.1457942, z: 7.2290463}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &259703870
 GameObject:

@@ -10,18 +10,8 @@ public class FloorLayer {
     }
 
     /// <summary>
-    /// Generate the tilemap (Default size: 10x10)
+    /// Generate the tilemap
     /// </summary>
-    public void SetTileMap() {
-        //Placeholder
-        tileMap = new TileData[10, 10];
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 10; y++) {
-                tileMap[x, y] = new TileData();
-                tileMap[x, y].SetPoint(x, y);
-            }
-        }
-    }
     public void SetTileMap(int width, int height) {
         //Placeholder
         tileMap = new TileData[width, height];
@@ -47,7 +37,10 @@ public class FloorLayer {
     /// <param name="p"></param>
     /// <returns></returns>
     public TileData GetTile(Point p) {
-        return tileMap[p.x, p.y];
+        return GetTile(p.x, p.y);
+    }
+    public TileData GetTile(int x, int y) {
+        return tileMap[x, y];
     }
 
     /// <summary>
@@ -55,11 +48,19 @@ public class FloorLayer {
     /// </summary>
     /// <param name="p"></param>
     /// <returns></returns>
-    public bool IsValidTile(Point p) {
-        if (p.x >= 0 && p.x < tileMap.GetLength(0) &&
-            p.y >= 0 && p.y < tileMap.GetLength(1)) {
+    public bool IsValidTile(int x, int y) {
+        if (x >= 0 && x < tileMap.GetLength(0) &&
+            y >= 0 && y < tileMap.GetLength(1)
+            && tileMap[x, y].GetTileType() != TileType.impassableTile) {
             return true;
         }
         return false;
+    }
+    public bool IsValidTile(Point p) {
+        return IsValidTile(p.x, p.y);
+    }
+
+    public Point GetMapSize() {
+        return new Point(tileMap.GetLength(0), tileMap.GetLength(1));
     }
 }

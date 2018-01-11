@@ -9,6 +9,7 @@ using UnityEngine;
 public class TileData {
     Point p;        // World position
     TileType type;  // Type of tile
+    public SpriteRenderer sprite;
 
     // Constructor
     public TileData() {
