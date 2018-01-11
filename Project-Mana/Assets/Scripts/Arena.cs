@@ -7,17 +7,25 @@ using UnityEngine;
  *  1. Arena (Consists of 2 FloorLayer)
  *      2. FloorLayer (Consists of many Tiles)
  *          3. Tile
- */ 
+ */
 public class Arena {
-    private static Arena instance;
-    FloorLayer[] layers;
-    FloorLayer fl = new FloorLayer();
+    private static Arena instance;      // Singleton Reference
+    FloorLayer[] layers;                // Air and Ground map layers
+    //FloorLayer fl = new FloorLayer();   //testing
 
-    //Singleton
     private Arena() {
-        FloorLayer[] layers = new FloorLayer[2];
+        Debug.Log("Constructor");
+        layers = new FloorLayer[2];
+        for (int i = 0; i < layers.Length; i++) {
+            layers[i] = new FloorLayer();
+            Debug.Log("Layers[i]: " + layers[i]);
+        }
     }
 
+    /// <summary>
+    /// Singleton Instance
+    /// If it does not exist, create it. Otherwise, return instance
+    /// </summary>
     public static Arena Instance {
         get {
             if (instance == null) {
@@ -29,6 +37,9 @@ public class Arena {
 
     public FloorLayer[] GetLayers() {
         return layers;
+    }
+    public int GetLayersLength() {
+        return layers.Length;
     }
 
     /// <summary>
