@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Point : MonoBehaviour {
+[System.Serializable]
+public class Point {
     public int x;   // x coordinate
     public int y;   // y coordinate
 

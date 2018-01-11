@@ -14,11 +14,9 @@ public class Arena {
     //FloorLayer fl = new FloorLayer();   //testing
 
     private Arena() {
-        Debug.Log("Constructor");
         layers = new FloorLayer[2];
         for (int i = 0; i < layers.Length; i++) {
             layers[i] = new FloorLayer();
-            Debug.Log("Layers[i]: " + layers[i]);
         }
     }
 

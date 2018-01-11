@@ -10,13 +10,23 @@ public class FloorLayer {
     }
 
     /// <summary>
-    /// Generate the tilemap
+    /// Generate the tilemap (Default size: 10x10)
     /// </summary>
     public void SetTileMap() {
         //Placeholder
         tileMap = new TileData[10, 10];
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {
+                tileMap[x, y] = new TileData();
+                tileMap[x, y].SetPoint(x, y);
+            }
+        }
+    }
+    public void SetTileMap(int width, int height) {
+        //Placeholder
+        tileMap = new TileData[width, height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 tileMap[x, y] = new TileData();
                 tileMap[x, y].SetPoint(x, y);
             }

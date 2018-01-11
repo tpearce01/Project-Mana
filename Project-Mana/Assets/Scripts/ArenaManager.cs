@@ -5,15 +5,12 @@ using UnityEngine;
 public class ArenaManager : MonoBehaviour {
 
     [SerializeField] GameObject[] tilePrefabs;
+    public Point mapSize;
 
 	// Use this for initialization
 	void Start () {
         for (int i = 0; i < Arena.Instance.GetLayersLength(); i++) {
-            Debug.Log(Arena.Instance.GetLayers().Length);
-            Debug.Log(Arena.Instance.GetLayers()[0]);
-            Debug.Log(Arena.Instance.GetLayers()[1]);
-            Debug.Log("Layer " + i);
-            Arena.Instance.GetLayers()[i].SetTileMap();
+            Arena.Instance.GetLayers()[i].SetTileMap(mapSize.x, mapSize.y);
         }
         GenerateMap();
 	}
