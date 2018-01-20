@@ -11,8 +11,9 @@ using UnityEngine;
 public class Arena {
     private static Arena instance;      // Singleton Reference
     FloorLayer[] layers;                // Air and Ground map layers
-    Color highlightColor = new Color(.5f,.5f,.5f,.5f);
-    Color defaultColor = new Color(1, 1, 1, 0.5f);
+    public static readonly Color highlightColor = new Color(.5f,.5f,.5f,.5f);
+    public static readonly Color targetMovementColor = new Color(.5f,1f,.5f,.5f);
+    public static readonly Color defaultColor = new Color(1, 1, 1, 0.5f);
 
     private Arena() {
         layers = new FloorLayer[2];
@@ -69,11 +70,36 @@ public class Arena {
             for (int y = pos.y - range; y <= pos.y + range; y++) {
                 int absX = Mathf.Abs(x - pos.x);
                 int absY = Mathf.Abs(y - pos.y);
-                if (layers[fl].IsValidTile(x, y) && absX + absY <= range && (pos.x != x || pos.y != y)) {
+                if (layers[fl].IsValidTile(x, y) && absX + absY <= range/* && (pos.x != x || pos.y != y)*/) {
                     layers[fl].GetTile(x, y).sprite.color = highlightColor;
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Highlight the target tile for movement
+    /// </summary>
+    /// <param name="fl"></param>
+    /// <param name="pos"></param>
+    public void HighlightMovementTargetTile(FloorLayers fl, Point pos) {
+        HighlightMovementTargetTile((int)fl, pos);
+    }
+    public void HighlightMovementTargetTile(int fl, Point pos) {
+        layers[fl].GetTile(pos.x, pos.y).sprite.color = targetMovementColor;
+    }
+
+    /// <summary>
+    /// Set the color of a single tile
+    /// </summary>
+    /// <param name="fl"></param>
+    /// <param name="pos"></param>
+    /// <param name="c"></param>
+    public void HighlightTile(FloorLayers fl, Point pos, Color c) {
+        HighlightTile((int)fl, pos, c);
+    }
+    public void HighlightTile(int fl, Point pos, Color c) {
+        layers[fl].GetTile(pos.x, pos.y).sprite.color = c;
     }
 
     /// <summary>

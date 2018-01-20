@@ -6,6 +6,7 @@ public class ArenaManager : MonoBehaviour {
 
     [SerializeField] GameObject[] tilePrefabs;
     public Point mapSize;
+    public static readonly int heightMultiplier = 3;
 
 	// Use this for initialization
 	void Start () {
@@ -36,6 +37,6 @@ public class ArenaManager : MonoBehaviour {
     /// <param name="type"></param>
     /// <param name="layer"></param>
     public void SpawnTile(Point p, TileType type, int layer) {
-        Arena.Instance.GetTile(p, layer).sprite = (Instantiate(tilePrefabs[(int)type], new Vector3(p.x, layer, p.y), Quaternion.identity) as GameObject).GetComponentInChildren<SpriteRenderer>();
+        Arena.Instance.GetTile(p, layer).sprite = (Instantiate(tilePrefabs[(int)type], new Vector3(p.x, layer * heightMultiplier, p.y), Quaternion.identity) as GameObject).GetComponentInChildren<SpriteRenderer>();
     }
 }
