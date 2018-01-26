@@ -9,13 +9,16 @@ public class UnitMovement : MonoBehaviour {
 
     Point targetPos;
     bool isColored = false;
+    bool isActive = false;
 
     void Start() {
         gameObject.transform.position = new Vector3(currentPos.x, (int)currentLayer * ArenaManager.heightMultiplier, currentPos.y);
     }
 
     void Update() {
-        Controls();
+        if (isActive) {
+            Controls();
+        }
     }
 
     void InitiateMovement() {
@@ -36,7 +39,7 @@ public class UnitMovement : MonoBehaviour {
                 InitiateMovement();
                 isColored = true;
             }
-            else if (targetPos == currentPos) {
+            else if (targetPos.x == currentPos.x && targetPos.y == currentPos.y) {
                 CancelMovement();
             }
             else {
@@ -44,6 +47,7 @@ public class UnitMovement : MonoBehaviour {
                 CancelMovement();
                 gameObject.transform.position = new Vector3(currentPos.x, (int)currentLayer * ArenaManager.heightMultiplier, currentPos.y);
                 //Movement has been used up
+                TurnSystemManager.ActivateNextUnit();
             }
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && isColored) {
@@ -100,5 +104,9 @@ public class UnitMovement : MonoBehaviour {
     void CancelMovement() {
         Arena.Instance.ClearHighlights();
         isColored = false;
+    }
+
+    public void SetActive(bool b) {
+        isActive = b;
     }
 }
