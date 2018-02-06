@@ -7,17 +7,38 @@ public class UnitMovement : MonoBehaviour {
     [SerializeField] int moveRange;
     [SerializeField] FloorLayers currentLayer;
 
-    Point targetPos;
-    bool isColored = false;
-    bool isActive = false;
+    [SerializeField] Point targetPos;
+
+    bool activatedThisFrame = false;
+    public bool hasMoved = false;
+    bool isEnabled = false;
 
     void Start() {
         gameObject.transform.position = new Vector3(currentPos.x, (int)currentLayer * ArenaManager.heightMultiplier, currentPos.y);
     }
 
+    public void Enable() {
+        activatedThisFrame = true;
+        isEnabled = true;
+        Arena.Instance.HighlightValidTiles(currentLayer, moveRange, currentPos);
+        Arena.Instance.HighlightMovementTargetTile(currentLayer, currentPos);
+        targetPos = new Point(currentPos.x, currentPos.y);
+    }
+
+    public void Disable() {
+        isEnabled = false;
+        Arena.Instance.ClearHighlights();
+        MasterSelector.instance.Show(currentPos);
+    }
+
     void Update() {
-        if (isActive) {
-            Controls();
+        if (isEnabled) {
+            if (!activatedThisFrame) {
+                Controls();
+            }
+            else {
+                activatedThisFrame = false;
+            }
         }
     }
 
@@ -35,23 +56,16 @@ public class UnitMovement : MonoBehaviour {
      */ 
     void Controls() {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            if (!isColored) {
-                InitiateMovement();
-                isColored = true;
-            }
-            else if (targetPos.x == currentPos.x && targetPos.y == currentPos.y) {
-                CancelMovement();
+            if (targetPos.x == currentPos.x && targetPos.y == currentPos.y) {
+                Disable();
             }
             else {
-                currentPos = targetPos;
-                CancelMovement();
+                currentPos = new Point(targetPos.x, targetPos.y);
                 gameObject.transform.position = new Vector3(currentPos.x, (int)currentLayer * ArenaManager.heightMultiplier, currentPos.y);
-                //Movement has been used up
-                TurnSystemManager.ActivateNextUnit();
+                Disable();
+                hasMoved = true;
+                TurnSystemManager.instance.CheckTurnEnd();
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && isColored) {
-            CancelMovement();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             if (IsValidMovementTile(currentLayer, moveRange, new Point(targetPos.x - 1, targetPos.y))) {
@@ -101,12 +115,7 @@ public class UnitMovement : MonoBehaviour {
         return IsValidMovementTile((int)fl, range, targetPos);
     }
 
-    void CancelMovement() {
-        Arena.Instance.ClearHighlights();
-        isColored = false;
-    }
-
-    public void SetActive(bool b) {
-        isActive = b;
+    public Point GetPosition() {
+        return currentPos;
     }
 }

@@ -8,34 +8,22 @@ using UnityEngine;
 */
 
 public class TurnSystemManager : MonoBehaviour {
-    private static TurnSystemManager instance;      // Singleton Reference
-    static GameObject[] units;//Units in game scene
-    static int currentUnit = 0;                            //Index of currently selected unit
+    public static TurnSystemManager instance;      // Singleton Reference
+    public static GameObject[] units;               //Units in game scene
+    public static bool[] hasMoved;
+    static int currentUnit = 0;                     //Index of currently selected unit
+
+    public Material inactiveMaterial;
+    public Material defaultMaterial;
+
+
+    void Awake() {
+        instance = this;
+    }
 
     //Set default active player to 0
     void Start() {
         GetUnitsInScene();
-        InitiateTurn();
-    }
-
-    /// <summary>
-    /// Change active unit
-    /// </summary>
-    /// <param name="unit"></param>
-    static void SetActiveUnit(int unit) {
-        //Set current Unit scripts to be inactive
-
-        if (units.Length > currentUnit) {
-            units[currentUnit].GetComponent<UnitMovement>().SetActive(false);
-        }
-
-        //Set new current Unit
-        currentUnit = unit;
-
-        //Set current Unit scripts to be active
-        if (units.Length > currentUnit) {
-            units[currentUnit].GetComponent<UnitMovement>().SetActive(true);
-        }
     }
 
     /// <summary>
@@ -43,32 +31,36 @@ public class TurnSystemManager : MonoBehaviour {
     /// </summary>
     void GetUnitsInScene() {
         units = GameObject.FindGameObjectsWithTag("Unit");
-        //units.AddRange(GameObject.FindGameObjectsWithTag("Unit"));
     }
 
-    /// <summary>
-    /// Changes the turn to the next unit
-    /// </summary>
-    public static void ActivateNextUnit() {
-        Debug.Log("Changing unit to " + (currentUnit + 1) + " out of " + units.Length + " units.");
-        if (currentUnit + 1 >= units.Length) {
-            Debug.Log("All units moved.");
-            AllUnitsMoved();
-            return;
+    GameObject[] GetUpdatedUnitList(GameObject[] list) {
+        List<GameObject> returnList = new List<GameObject>();
+        for (int i = 0; i < list.Length; i++) {
+            if (list[i] != null) {
+                returnList.Add(list[i]);
+            }
         }
-        SetActiveUnit((currentUnit + 1));
+        return returnList.ToArray();
     }
 
-    static void AllUnitsMoved() {
-        units[currentUnit].GetComponent<UnitMovement>().SetActive(false);
-        //Trigger next event
-        InitiateTurn();    //For testing
+    public GameObject[] GetUnitList() {
+        return GetUpdatedUnitList(units);
     }
 
-    static void InitiateTurn() {
-        Debug.Log("Turn Begin.");
-        if (units.Length > 0) {
-            SetActiveUnit(0);
+    public void CheckTurnEnd() {
+        for (int i = 0; i < units.Length; i++) {
+            if (!units[i].GetComponent<UnitMovement>().hasMoved) {
+                return;
+            }
+        }
+        RefreshTurn();
+    }
+
+    public void RefreshTurn() {
+        Debug.Log("Refreshing turn...");
+        for (int i = 0; i < units.Length; i++) {
+            units[i].GetComponent<UnitMovement>().hasMoved = false;
+            units[i].GetComponentInChildren<MeshRenderer>().materials[0] = defaultMaterial;
         }
     }
 }
