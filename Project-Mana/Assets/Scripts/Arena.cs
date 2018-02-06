@@ -14,12 +14,17 @@ public class Arena {
     public static readonly Color highlightColor = new Color(.5f,.5f,.5f,.5f);
     public static readonly Color targetMovementColor = new Color(.5f,1f,.5f,.5f);
     public static readonly Color defaultColor = new Color(1, 1, 1, 0.5f);
+    public static readonly Color masterSelectorColor = Color.red;
 
     private Arena() {
         layers = new FloorLayer[2];
         for (int i = 0; i < layers.Length; i++) {
             layers[i] = new FloorLayer();
         }
+    }
+
+    void Awake() {
+        instance = this;
     }
 
     /// <summary>
