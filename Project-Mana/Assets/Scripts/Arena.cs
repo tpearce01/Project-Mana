@@ -34,6 +34,7 @@ public class Arena {
     public static Arena Instance {
         get {
             if (instance == null) {
+                Debug.Log("Arena Exists");
                 instance = new Arena();
             }
             return instance;
@@ -83,6 +84,31 @@ public class Arena {
     }
 
     /// <summary>
+    /// Highlight valid movement tiles
+    /// </summary>
+    /// <param name="fl"></param>
+    /// <param name="range"></param>
+    /// <param name="pos"></param>
+    public void HightlightValidMovementTiles(int fl, int range, Point pos) {
+        HVMTRecurse(fl, range, pos, new HashSet<Point>());
+    }
+    void HVMTRecurse(int fl, int range, Point pos, HashSet<Point> visited) {
+        if (range < 0) {
+            return;
+        }
+        else if(!visited.Contains(pos)) {
+            if (layers[fl].IsValidTile(pos)) {
+                layers[fl].GetTile(pos).sprite.color = highlightColor;
+            }
+            visited.Add(pos);
+            HVMTRecurse(fl, range-1, new Point(pos.x-1, pos.y), visited);
+            HVMTRecurse(fl, range - 1, new Point(pos.x + 1, pos.y), visited);
+            HVMTRecurse(fl, range - 1, new Point(pos.x, pos.y + 1), visited);
+            HVMTRecurse(fl, range - 1, new Point(pos.x, pos.y - 1), visited);
+        }
+    }
+
+    /// <summary>
     /// Highlight the target tile for movement
     /// </summary>
     /// <param name="fl"></param>
@@ -118,6 +144,19 @@ public class Arena {
                     layers[i].GetTile(x, y).sprite.color = defaultColor;
                 }
             }
+        }
+    }
+    public void ClearHighlights(int fl, int range, Point pos, HashSet<Point> visited) {
+        if (range < 0) {
+            return;
+        }
+        else if (!visited.Contains(pos)) {
+            layers[fl].GetTile(pos).sprite.color = defaultColor;
+            visited.Add(pos);
+            ClearHighlights(fl, range - 1, new Point(pos.x - 1, pos.y), visited);
+            ClearHighlights(fl, range - 1, new Point(pos.x + 1, pos.y), visited);
+            ClearHighlights(fl, range - 1, new Point(pos.x, pos.y + 1), visited);
+            ClearHighlights(fl, range - 1, new Point(pos.x, pos.y - 1), visited);
         }
     }
 

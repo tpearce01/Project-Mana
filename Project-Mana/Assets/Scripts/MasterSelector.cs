@@ -65,7 +65,8 @@ public class MasterSelector : MonoBehaviour {
             currentUnit = GetUnitAtPos(currentPos);
             if (currentUnit != null && !currentUnit.GetComponent<UnitMovement>().hasMoved) {
                 Hide(Arena.targetMovementColor);
-                currentUnit.GetComponent<UnitMovement>().Enable();
+                //currentUnit.GetComponent<UnitMovement>().Enable();
+                TurnMenu.instance.UnitSelected(currentUnit);
             }
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
